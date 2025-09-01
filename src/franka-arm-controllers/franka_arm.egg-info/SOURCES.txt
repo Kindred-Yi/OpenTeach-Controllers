@@ -1,3 +1,5 @@
+README.md
+setup.cfg
 setup.py
 franka_arm.egg-info/PKG-INFO
 franka_arm.egg-info/SOURCES.txt

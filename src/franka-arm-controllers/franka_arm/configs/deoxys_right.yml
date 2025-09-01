@@ -7,10 +7,10 @@ PC:
 NUC:
   NAME: "grail"
   IP: 192.168.4.4
-  PUB_PORT: 5556
-  SUB_PORT: 5555
-  GRIPPER_PUB_PORT: 5558
-  GRIPPER_SUB_PORT: 5557
+  PUB_PORT: 5566
+  SUB_PORT: 5565
+  GRIPPER_PUB_PORT: 5568
+  GRIPPER_SUB_PORT: 5567
 
 # TODO: Write a script to change everything in the nuc
 

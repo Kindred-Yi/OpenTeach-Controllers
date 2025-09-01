@@ -13,10 +13,11 @@ from deoxys.utils.log_utils import get_deoxys_example_logger
 
 from franka_arm.utils import move_joints, get_position_controller_config, get_velocity_controller_config, euler2quat
 
-from .constants import *
+from franka_arm.constants import *
+
 
 class FrankaController:
-    def __init__(self, record=False):
+    def __init__(self, record=False, hand_type=None):
         if record:
 
             # Change the yaml file to have a random pub port
@@ -33,8 +34,15 @@ class FrankaController:
                 state_freq=STATE_FREQ
             )
         else:
+            if hand_type == 'left':
+                config_file = 'deoxys_left.yml'
+            if hand_type == 'right':
+                config_file = 'deoxys_right.yml'
+            else:
+                config_file = 'deoxys.yml'
+
             self.robot_interface = FrankaInterface(
-                os.path.join(CONFIG_ROOT, 'deoxys.yml'), use_visualizer=False,
+                os.path.join(CONFIG_ROOT, config_file), use_visualizer=False,
                 control_freq = CONTROL_FREQ,
                 state_freq=STATE_FREQ
             )
@@ -119,10 +127,24 @@ class FrankaController:
 
 
 if __name__ == '__main__':
-    from holobot.robot.franka import FrankaArm
-    franka = FrankaArm()
-    FRANKA_HOME_VALUES_CART = [0.65441835, -0.01289619, 0.15598844, -0.27365872, 0.77609015, 0.00515388, 0.56812686]
-    franka.move_coords(FRANKA_HOME_VALUES_CART)
+    import time
+    import numpy as np
 
+    ctrl = FrankaController(record=False)
 
+    # read current state
+    q0 = np.asarray(ctrl.get_joint_position()).flatten()
+    print("[init] joints:", q0)
 
+    dq = np.deg2rad(5)
+    q_target = q0.copy()
+    q_target[3] += dq
+    print("[move] joint 3 +5°")
+    ctrl.joint_movement(q_target)
+    time.sleep(3)
+
+    print("[move] back to start")
+    ctrl.joint_movement(q0)
+    time.sleep(3)
+
+    print("[done] joint movement test complete.")

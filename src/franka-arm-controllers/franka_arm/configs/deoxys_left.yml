@@ -15,7 +15,7 @@ NUC:
 # TODO: Write a script to change everything in the nuc
 
 ROBOT:
-  IP: 192.168.4.2
+  IP: 192.168.4.3
 
 CONTROL:
   STATE_PUBLISHER_RATE: 100
